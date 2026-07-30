@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=550, initial-scale=1" />
+        <title>PyPoolPi</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+        <script id="endpoint-map" type="application/json">
+            {{ endpoint_map | safe }}
+        </script>
+        <script id="config-schema" type="application/json">
+            {{ config_schema | safe }}
+        </script>
+        <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>PyPoolPi</h1>
+            <div class="control">
+                <label for="cover-state-container">Cover State</label>
+                <output id="cover-state-container"></output>
+            </div>
+            <input type="checkbox" id="theme-toggle" class="icon" />
+        </header>
+
+        <main>
+            <section>
+                <header>
+                    <input type="checkbox" class="icon" checked />
+                    <h2>Configuration</h2>
+                    <span>
+                        <button type="button" id="config-reset-btn" class="icon">reset_settings</button>
+                        <button type="button" id="config-save-btn" class="icon">save</button>
+                    </span>
+                </header>
+
+                <div>
+                    <form id="config-form-container"></form>
+                    <p>All durations, delays and intervals must be specified in seconds.</p>
+                </div>
+            </section>
+
+            <section>
+                <header>
+                    <input type="checkbox" class="icon" />
+                    <h2>Log Viewer</h2>
+                    <span>
+                        <button type="button" id="log-refresh-button" class="icon">refresh</button>
+                    </span>
+                </header>
+
+                <div>
+                    <div class="control">
+                        <label for="log-line-limit-field">Line Limit</label>
+                        <input type="number" id="log-line-limit-field" min="0" step="1" />
+                    </div>
+                    <pre id="log-output-container"></pre>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <button type="button" id="open-button">Open</button>
+            <button type="button" id="close-button">Close</button>
+            <button type="button" id="stop-button">Stop</button>
+        </footer>
+    </body>
+</html>

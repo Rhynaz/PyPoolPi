@@ -1,0 +1,12 @@
+[Unit]
+Description=PyPoolPi
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+WorkingDirectory=%d
+ExecStart=%d/pypoolpi_run.sh
+
+[Install]
+WantedBy=multi-user.target

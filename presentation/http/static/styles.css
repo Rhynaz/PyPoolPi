@@ -1,0 +1,434 @@
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Fira+Code:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=block");
+
+:root {
+    /* light theme colors */
+    --light-background-color: #ffffff;
+    --light-background-color-alternative: #f9f9f9;
+    --light-foreground-color: #000000;
+    --light-border-color: #dddddd;
+
+    /* dark theme colors */
+    --dark-background-color: #121212;
+    --dark-background-color-alternative: #1a1a1a;
+    --dark-foreground-color: #ffffff;
+    --dark-border-color: #333333;
+
+    /* accent colors */
+    --accent-color: #ff0000;
+    --accent-text: #ffffff;
+
+    /* fonts */
+    --font-family: "Comfortaa", sans-serif;
+    --font-family-monospace: "Fira Code", monospace;
+    --font-size: 1rem;
+    --font-size-monospace: 0.75rem;
+    --font-size-h1: 1.5rem;
+    --font-size-h2: 1.25rem;
+    --font-size-input: 1rem;
+    --font-size-label: 0.75rem;
+
+    /* layout */
+    --spacing: 20px;
+    --spacing-horizontal: 20px;
+    --spacing-vertical: 10px;
+    --border-width: 1px;
+    --border-radius: 10px;
+    --control-height: 40px;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background-color: var(--light-background-color);
+        --background-color-alternative: var(--light-background-color-alternative);
+        --foreground-color: var(--light-foreground-color);
+        --border-color: var(--light-border-color);
+    }
+
+    :root:has(input[type="checkbox"]#theme-toggle:checked) {
+        --background-color: var(--dark-background-color);
+        --background-color-alternative: var(--dark-background-color-alternative);
+        --foreground-color: var(--dark-foreground-color);
+        --border-color: var(--dark-border-color);
+    }
+
+    input[type="checkbox"]#theme-toggle::before {
+        content: "dark_mode";
+    }
+
+    input[type="checkbox"]#theme-toggle:checked::before {
+        content: "light_mode";
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: var(--dark-background-color);
+        --background-color-alternative: var(--dark-background-color-alternative);
+        --foreground-color: var(--dark-foreground-color);
+        --border-color: var(--dark-border-color);
+    }
+
+    :root:has(input[type="checkbox"]#theme-toggle:checked) {
+        --background-color: var(--light-background-color);
+        --background-color-alternative: var(--light-background-color-alternative);
+        --foreground-color: var(--light-foreground-color);
+        --border-color: var(--light-border-color);
+    }
+
+    input[type="checkbox"]#theme-toggle::before {
+        content: "light_mode";
+    }
+
+    input[type="checkbox"]#theme-toggle:checked::before {
+        content: "dark_mode";
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0 auto;
+
+    height: 100dvh;
+    width: 100dvw;
+    max-width: 1000px;
+    min-width: 550px;
+
+    color: var(--foreground-color);
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+body > header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    flex: none;
+
+    background-color: var(--background-color-alternative);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    border-top: none;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: var(--spacing-vertical) var(--spacing-horizontal);
+    gap: var(--spacing);
+}
+
+body > header > :first-child {
+    justify-self: start;
+}
+
+body > header > :last-child {
+    justify-self: end;
+}
+
+body > main {
+    flex: 1;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    gap: var(--spacing);
+}
+
+body > footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+
+    flex: none;
+
+    background-color: var(--background-color-alternative);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-bottom: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-vertical) var(--spacing-horizontal);
+    gap: var(--spacing);
+}
+
+section {
+    background-color: var(--background-color);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    display: flex;
+    flex-direction: column;
+}
+
+section > header {
+    background-color: var(--background-color-alternative);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: var(--spacing-vertical) var(--spacing-horizontal);
+    gap: var(--spacing);
+}
+
+section > header > input[type="checkbox"] {
+    justify-self: start;
+
+    appearance: none;
+    outline: none;
+    user-select: none;
+    cursor: pointer;
+
+    color: var(--foreground-color);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section > header > input[type="checkbox"]::before {
+    content: "keyboard_arrow_down";
+}
+
+section > header > input[type="checkbox"]:checked::before {
+    content: "keyboard_arrow_right";
+}
+
+section > header > span {
+    justify-self: end;
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing);
+}
+
+section > div {
+    border-top: var(--border-width) solid var(--border-color);
+
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    gap: var(--spacing);
+}
+
+section:has(header > input[type="checkbox"]:checked) > header {
+    border-radius: var(--border-radius);
+}
+
+section:has(header > input[type="checkbox"]:checked) > div {
+    display: none;
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: 600;
+}
+
+p {
+    font-size: var(--font-size);
+    text-align: center;
+}
+
+button,
+input[type="checkbox"]#theme-toggle {
+    height: var(--control-height);
+
+    appearance: none;
+    outline: none;
+    user-select: none;
+    cursor: pointer;
+
+    color: var(--accent-text);
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-vertical) var(--spacing-horizontal);
+}
+
+button:hover,
+input[type="checkbox"]#theme-toggle:hover {
+    opacity: 0.75;
+}
+
+button:active,
+input[type="checkbox"]#theme-toggle:active {
+    transform: scale(0.9);
+}
+
+.icon {
+    font-family: "Material Symbols Rounded";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -moz-font-feature-settings: "liga";
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button.icon,
+input[type="checkbox"]#theme-toggle.icon {
+    aspect-ratio: 1/1;
+    padding: 0;
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+fieldset.control-group {
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing);
+}
+
+fieldset.control-group:has(legend) {
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+fieldset.control-group > legend {
+    padding: 0 calc(var(--spacing-horizontal) / 2);
+    margin: 0 calc(var(--spacing-horizontal) / 2);
+    margin-bottom: var(--spacing);
+}
+
+div.control {
+    position: relative;
+    flex: 1 0 auto;
+    align-self: center;
+
+    height: var(--control-height);
+    width: fit-content;
+    min-width: 90px;
+
+    background-color: var(--background-color-alternative);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    display: inline-grid;
+}
+
+div.control:focus-within {
+    border-color: var(--accent-color);
+}
+
+div.control > label {
+    grid-area: 1/1;
+    z-index: 15;
+    align-self: start;
+    justify-self: start;
+    margin: 0 calc(var(--spacing-horizontal) / 2);
+    transform: translateY(-50%);
+
+    background-color: var(--border-color);
+    border-radius: var(--border-radius);
+    user-select: none;
+    white-space: nowrap;
+    font-size: var(--font-size-label);
+
+    padding: 0 calc(var(--spacing-horizontal) / 2);
+}
+
+div.control:focus-within > label {
+    color: var(--accent-text);
+    background-color: var(--accent-color);
+}
+
+div.control > input,
+div.control > select,
+div.control > output {
+    grid-area: 1/1;
+    z-index: 10;
+
+    width: 100%;
+    height: 100%;
+    field-sizing: content;
+
+    outline: none;
+    color: var(--foreground-color);
+    background-color: transparent;
+    border: none;
+    font-size: var(--font-size-input);
+
+    padding: var(--spacing-vertical) var(--spacing-horizontal);
+}
+
+div.control > input[type="checkbox"] {
+    appearance: none;
+    user-select: none;
+    cursor: pointer;
+
+    font-family: var(--font-family-monospace);
+
+    align-content: center;
+}
+
+div.control > input[type="checkbox"]::before {
+    content: "FALSE";
+}
+
+div.control > input[type="checkbox"]:checked::before {
+    content: "TRUE";
+}
+
+div.control > select {
+    cursor: pointer;
+}
+
+div.control > output {
+    font-family: var(--font-family-monospace);
+    text-align: center;
+}
+
+pre {
+    background-color: var(--background-color-alternative);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    font-family: var(--font-family-monospace);
+    font-size: var(--font-size-monospace);
+    line-height: 1.25;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+
+    padding: var(--spacing-vertical) var(--spacing-horizontal);
+}

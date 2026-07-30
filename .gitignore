@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+
+pypoolpi.state
+pypoolpi.config.toml
