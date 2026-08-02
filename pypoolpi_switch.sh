@@ -10,7 +10,9 @@ dir_path=$(dirname "$script_path")
 parent_path=$(dirname "$dir_path")
 
 systemctl stop pypoolpi.service
-rm "$parent_path/pypoolpi"
 
-ln -s "$dir_path" "$parent_path/pypoolpi"
+ln -sf "$dir_path" "$parent_path/pypoolpi"
+echo "Created symlink '$dir_path' → '$parent_path/pypoolpi'."
+
+systemctl daemon-reload
 systemctl start pypoolpi.service

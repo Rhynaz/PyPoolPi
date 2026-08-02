@@ -5,8 +5,7 @@ After=network.target
 [Service]
 Type=simple
 Restart=on-failure
-WorkingDirectory=%d
-ExecStart=%d/pypoolpi_run.sh
+ExecStart=/usr/local/bin/pypoolpi
 
 [Install]
 WantedBy=multi-user.target
