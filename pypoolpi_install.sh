@@ -25,4 +25,4 @@ dir_path=$(dirname "$script_path")
 parent_path=$(dirname "$dir_path")
 
 ln -s "$dir_path" "$parent_path/pypoolpi"
-systemctl enable -now "$parent_path/pypoolpi/pypoolpi.service"
+systemctl enable --now "$parent_path/pypoolpi/pypoolpi.service"
