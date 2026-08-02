@@ -57,7 +57,7 @@
 1. Clone the repository into a versioned folder (e.g., `~/pypoolpi-v1`):
 
    ```sh
-   git clone https://github.com/Rhynaz/PyPoolPi.git ~/pypoolpi-v1
+   git clone https://github.com/Rhynaz/PyPoolPi.git --branch v1 ~/pypoolpi-v1
    ```
 
 2. Run the installation script with `sudo`:
@@ -75,7 +75,7 @@ To deploy a new release without breaking service state:
 1. Clone the new version:
 
    ```sh
-   git clone https://github.com/Rhynaz/PyPoolPi.git ~/pypoolpi-v2
+   git clone https://github.com/Rhynaz/PyPoolPi.git --branch v2 ~/pypoolpi-v2
    ```
 
 2. Execute the version switch script:
