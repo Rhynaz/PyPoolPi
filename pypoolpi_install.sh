@@ -24,10 +24,10 @@ script_path=$(realpath "$0")
 dir_path=$(dirname "$script_path")
 parent_path=$(dirname "$dir_path")
 
-ln -sf "$dir_path" "$parent_path/pypoolpi"
+ln -sfT "$dir_path" "$parent_path/pypoolpi"
 echo "Created symlink '$dir_path' → '$parent_path/pypoolpi'."
 
-ln -sf "$parent_path/pypoolpi/pypoolpi.sh" "/usr/local/bin/pypoolpi"
+ln -sfT "$parent_path/pypoolpi/pypoolpi.sh" "/usr/local/bin/pypoolpi"
 echo "Created symlink '$parent_path/pypoolpi/pypoolpi.sh' → '/usr/local/bin/pypoolpi'."
 
 systemctl enable --now "$parent_path/pypoolpi/pypoolpi.service"
