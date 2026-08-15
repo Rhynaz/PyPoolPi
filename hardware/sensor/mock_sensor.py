@@ -12,5 +12,12 @@ class MockSensor(Sensor):
         super().__init__(value)
 
     @override
+    def set_enabled(self, enable: bool) -> None:
+        if enable:
+            log("info", "Enabling mock detection.")
+        else:
+            log("info", "Disabling mock detection.")
+
+    @override
     def deallocate(self) -> None:
         log("info", "Deallocating mock sensor.")

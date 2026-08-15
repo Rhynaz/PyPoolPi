@@ -23,25 +23,28 @@ class GpiozeroSensor(Sensor):
 
         self._sense_pin.when_activated = self._value_changed
         self._sense_pin.when_deactivated = self._value_changed
-        self._turn_on()
+        self.set_enabled(False)
+
+    @override
+    def set_enabled(self, enable: bool) -> None:
+        if enable:
+            log("info", "Setting sensor power pin: ON")
+            self._power_pin.on()
+        else:
+            log("info", "Setting sensor power pin: OFF")
+            self._power_pin.off()
 
     @override
     def deallocate(self) -> None:
         log("info", "Deallocating mock sensor.")
-        self._turn_off()
+        self.set_enabled(False)
         self._power_pin.close()
         self._sense_pin.close()
 
-    def _turn_on(self) -> None:
-        log("info", "Setting sensor power pin: ON")
-        self._power_pin.on()
-
-    def _turn_off(self) -> None:
-        log("info", "Setting sensor power pin: OFF")
-        self._power_pin.off()
-
     def _value_changed(self) -> None:
         if self._sense_pin.is_active:
+            log("info", f"Rising edge detected: {self._value.name} -> {SensorValue.PRESENT.name}")
             self._value = SensorValue.PRESENT
         else:
+            log("info", f"Falling edge detected: {self._value.name} -> {SensorValue.ABSENT.name}")
             self._value = SensorValue.ABSENT

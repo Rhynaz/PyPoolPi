@@ -23,6 +23,8 @@ class DiveSequenceExtension(Extension):
         self._sensor = sensor
 
         self._config: DiveSequenceConfig = config_manager.config.controller.dive_sequence
+        self._callback_enabled = False
+
         self._timer = Timer("dive-sequence-timer")
         self._timer.start()
 
@@ -34,21 +36,24 @@ class DiveSequenceExtension(Extension):
 
     @override
     def on_close(self) -> None:
-        self.on_stop()
-
         if not self._config.enable or self._state_machine.get_state() != EndState.OPENED:
+            self.on_stop()
             return
 
         if self._config.use_sensor:
             log("info", "Waiting for cover start detection.")
+            self._timer.reset()
+            self._callback_enabled = True
             self._sensor.add_sensor_value_changed_callback(self._sensor_value_changed)
         else:
             self._prepare_dive()
 
     @override
     def on_stop(self) -> None:
-        self._sensor.remove_sensor_value_changed_callback(self._sensor_value_changed)
         self._timer.reset()
+        if self._callback_enabled:
+            self._sensor.remove_sensor_value_changed_callback(self._sensor_value_changed)
+            self._callback_enabled = False
 
     @override
     def deallocate(self) -> None:
@@ -70,6 +75,8 @@ class DiveSequenceExtension(Extension):
         log("info", "Cover start detected.")
         with self._state_machine:
             self._sensor.remove_sensor_value_changed_callback(self._sensor_value_changed)
+            self._callback_enabled = False
+
             self._prepare_dive()
 
     def _prepare_dive(self) -> None:

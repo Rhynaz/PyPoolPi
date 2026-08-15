@@ -23,6 +23,10 @@ class Sensor(ABC):
         HolderProperty.change_holder(self, Sensor._value, value)
 
     @abstractmethod
+    def set_enabled(self, enable: bool) -> None:
+        pass
+
+    @abstractmethod
     def deallocate(self) -> None:
         pass
 

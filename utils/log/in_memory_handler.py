@@ -1,7 +1,8 @@
 from collections import deque
+from collections.abc import Callable
 from logging import Handler, LogRecord
 from threading import Lock
-from typing import Callable, override
+from typing import override
 
 type LogEmittedCallback = Callable[[LogRecord, str], None]
 

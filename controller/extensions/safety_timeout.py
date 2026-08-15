@@ -21,19 +21,21 @@ class SafetyTimeoutExtension(Extension):
 
     @override
     def on_open(self) -> None:
-        self.on_stop()
+        if not self._config.enable:
+            self.on_stop()
+            return
 
-        if self._config.enable:
-            log("info", "Starting opening timeout.")
-            self._timer.set(self._config.max_opening_duration, self._on_timeout)
+        log("info", "Starting opening timeout.")
+        self._timer.set(self._config.max_opening_duration, self._on_timeout)
 
     @override
     def on_close(self) -> None:
-        self.on_stop()
+        if not self._config.enable:
+            self.on_stop()
+            return
 
-        if self._config.enable:
-            log("info", "Starting closing timeout.")
-            self._timer.set(self._config.max_closing_duration, self._on_timeout)
+        log("info", "Starting closing timeout.")
+        self._timer.set(self._config.max_closing_duration, self._on_timeout)
 
     @override
     def on_stop(self) -> None:
@@ -53,4 +55,4 @@ class SafetyTimeoutExtension(Extension):
 
     def _on_timeout(self) -> None:
         log("info", "Safety timeout has elapsed.")
-        self._state_machine.stop_cover()
+        _ = self._state_machine.stop_cover()

@@ -103,10 +103,10 @@ def _apply_log_config(config: LogConfig) -> None:
 
 
 __all__ = [
-    "setup_log",
-    "log",
-    "get_log_records",
-    "get_log_lines",
     "add_log_emitted_callback",
+    "get_log_lines",
+    "get_log_records",
+    "log",
     "remove_log_emitted_callback",
+    "setup_log",
 ]

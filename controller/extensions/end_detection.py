@@ -23,6 +23,7 @@ class EndDetectionExtension(Extension):
 
         self._config: EndDetectionConfig = config_manager.config.controller.end_detection
         self._trigger: Trigger = "stop"
+
         self._timer = Timer("end-detection-timer")
         self._timer.start()
 
@@ -30,27 +31,32 @@ class EndDetectionExtension(Extension):
 
     @override
     def on_open(self) -> None:
-        self.on_stop()
+        if not self._config.enable:
+            self.on_stop()
+            return
 
-        if self._config.enable:
-            log("info", "Waiting for cover end detection.")
-            self._trigger = "open"
-            self._sensor.add_sensor_value_changed_callback(self._sensor_value_changed)
+        log("info", "Waiting for cover end detection.")
+        self._timer.reset()
+        self._trigger = "open"
+        self._sensor.add_sensor_value_changed_callback(self._sensor_value_changed)
 
     @override
     def on_close(self) -> None:
-        self.on_stop()
+        if not self._config.enable:
+            self.on_stop()
+            return
 
-        if self._config.enable:
-            log("info", "Waiting for cover end detection.")
-            self._trigger = "close"
-            self._sensor.add_sensor_value_changed_callback(self._sensor_value_changed)
+        log("info", "Waiting for cover end detection.")
+        self._timer.reset()
+        self._trigger = "close"
+        self._sensor.add_sensor_value_changed_callback(self._sensor_value_changed)
 
     @override
     def on_stop(self) -> None:
-        self._sensor.remove_sensor_value_changed_callback(self._sensor_value_changed)
         self._timer.reset()
-        self._trigger = "stop"
+        if self._trigger != "stop":
+            self._sensor.remove_sensor_value_changed_callback(self._sensor_value_changed)
+            self._trigger = "stop"
 
     @override
     def deallocate(self) -> None:
@@ -84,3 +90,5 @@ class EndDetectionExtension(Extension):
                     self._config.closing_overrun_duration,
                     lambda: self._state_machine.stop_cover(EndState.CLOSED),
                 )
+
+            self._trigger = "stop"

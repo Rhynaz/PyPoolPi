@@ -38,6 +38,10 @@ class Holder[T]:
         with self._lock:
             self._callbacks.discard(callback)
 
+    def has_value_changed_callback(self, callback: ValueChangedCallback[T] | None = None) -> bool:
+        with self._lock:
+            return len(self._callbacks) > 0 and (True if callback is None else callback in self._callbacks)
+
     def deallocate(self) -> None:
         with self._lock:
             self._callbacks.clear()
@@ -107,6 +111,17 @@ class HolderProperty[T]:
             instance.__dict__[property._name] = Holder(property._initial_value)
 
         instance.__dict__[property._name].remove_value_changed_callback(callback)
+
+    @staticmethod
+    def has_value_changed_callback(
+        instance: Any,
+        property: HolderProperty[T],
+        callback: ValueChangedCallback[T] | None = None,
+    ) -> bool:
+        if property._name not in instance.__dict__:
+            instance.__dict__[property._name] = Holder(property._initial_value)
+
+        return instance.__dict__[property._name].has_value_changed_callback(callback)
 
     @staticmethod
     def deallocate(instance: Any, property: HolderProperty[T]) -> None:
