@@ -12,7 +12,7 @@ from presentation.mqtt import PahoMqttFrontend
 from utils.log import setup_log
 
 cmdline = ArgumentParser("pypoolpi")
-cmdline.add_argument(
+_ = cmdline.add_argument(
     "-c",
     "--config",
     default=environ.get("PYPOOLPI_CONFIG", "pypoolpi.config.toml"),
@@ -33,8 +33,8 @@ mqtt_frontend = PahoMqttFrontend(config_manager, cover_controller)
 http_frontend = FlaskHttpFrontend(config_manager, cover_controller)
 
 signals = {SIGINT, SIGTERM}
-pthread_sigmask(SIG_BLOCK, signals)
-sigwait(signals)
+_ = pthread_sigmask(SIG_BLOCK, signals)
+_ = sigwait(signals)
 
 http_frontend.shutdown()
 mqtt_frontend.shutdown()
